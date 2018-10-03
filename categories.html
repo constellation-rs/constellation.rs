@@ -1,0 +1,111 @@
+---
+layout: page
+permalink: /categories
+title: Categories
+---
+{%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+<div id="archives">
+{% for category in site.categories %}
+  <!-- <div class="archive-group"> -->
+    {% capture category_name %}{{ category | first }}{% endcapture %}
+    <!-- <div id="#{{ category_name | slugize }}"></div> -->
+    <!-- <p></p> -->
+    
+    <details id="{{ category_name | slugize }}"><summary style="cursor: pointer; outline: none;"><a href="#{{ category_name | slugize }}" style="color: #111;"><!--<h3 class="category-head" style="display: inline"> -->{{ category_name }}<!-- </h3> --></a></summary>
+    {% for post in site.categories[category_name] %}
+    <!-- <article class="archive-item"> -->
+      <!-- <h4> --><a href="{{ site.baseurl }}{{ post.url }}">{{post.title}}</a> – {{ post.date | date: date_format }}</br><!-- </h4> -->
+    <!-- </article> -->
+    {% endfor %}
+    </details>
+  <!-- </div> -->
+{% endfor %}
+</div>
+<script>
+  (function(){function f(){var b=location.hash.substring(1),a=null;b&&(b=document.getElementById(decodeURIComponent(b)))&&"details"===b.tagName.toLowerCase()&&(a=b);if(a!==c){c=a;for(a=0;a<e.length;a++)c!==e[a]&&(e[a].open=!1);c.open=!0}}var e=document.getElementsByTagName("details"),c=null;window.addEventListener("DOMContentLoaded",function(){for(var b={},a=0;a<e.length;b={a:b.a},a++)if(b.a=e[a],b.a.id){b.a.addEventListener("toggle",function(b){return function(){if(b.a.open){var d=b.a;for(var a=0;a<e.length;a++)e[a]!==b.a&&(e[a].open=!1)}else d=b.a===c?null:c;d!==c&&(d=(c=d)?"#"+encodeURIComponent(c.id):"",history.replaceState?(""===d&&(d=new URL(window.location),d.hash=""),history.replaceState(null,null,d),f()):location.hash=d)}}(b),!1);for(var h=b.a.getElementsByTagName("a"),g=0;g<h.length;g++){var k=h[g];k.hash==="#"+encodeURIComponent(b.a.id)&&(k.onclick=function(b){return function(a){if(a.altKey||a.ctrlKey||a.metaKey||a.shiftKey||a.defaultPrevented)return!0;a.preventDefault();b.a.open=!b.a.open;return!1}}(b))}}f()});window.addEventListener("hashchange",f)})();
+
+// (function(){
+// let detailss = document.getElementsByTagName('details');
+// let toggled = null;
+// window.addEventListener('DOMContentLoaded', function() {
+//   for (var i = 0; i < detailss.length; i++) {
+//     let detailsElem = detailss[i];
+//     if (!detailsElem.id) continue;
+//     detailsElem.addEventListener("toggle", function(evt) {
+//       // console.log("\\toggle "+detailsElem.id);
+//       var newToggled = null;
+//       if (detailsElem.open) {
+//         newToggled = detailsElem;
+//         for (var j = 0; j < detailss.length; j++) {
+//           if (detailss[j] !== detailsElem) {
+//             detailss[j].open = false;
+//           }
+//         }
+//       } else if (detailsElem === toggled) {
+//         newToggled = null;
+//       } else {
+//         newToggled = toggled;
+//       }
+//       if (newToggled !== toggled) {
+//         toggled = newToggled;
+//         let hash = toggled ? "#" + encodeURIComponent(toggled.id) : "";
+//         // console.log("hash: "+hash);
+//         if (history.replaceState) {
+//           if (hash === "") {
+//             const url = new URL(window.location);
+//             url.hash = '';
+//             hash = url;
+//           }
+//           history.replaceState(null, null, hash);
+//           openDetails();
+//         } else {
+//           location.hash = hash;
+//         }
+//       }
+//       // console.log("/toggle "+detailsElem.id);
+//     }, false);
+//     let hrefs = detailsElem.getElementsByTagName("a");
+//     for (var j = 0; j < hrefs.length; j++) {
+//       let href = hrefs[j];
+//       // console.log(href);
+//       if (href.hash === "#" + encodeURIComponent(detailsElem.id)) {
+//         href.onclick = function(evt) {
+//           if (evt.altKey || evt.ctrlKey || evt.metaKey || evt.shiftKey || evt.defaultPrevented) {
+//             return true;
+//           }
+//           evt.preventDefault();
+//           // console.log(evt);
+//           detailsElem.open = !detailsElem.open;
+//           return false;
+//         };
+//       }
+//     }
+//   }
+//   openDetails();
+// });
+// function openDetails() {
+//   // console.log("openDetails");
+//   var hash = location.hash.substring(1);
+// //   // console.log(hash);
+//   var newToggled = null;
+//   if (hash) {
+//     var details = document.getElementById(decodeURIComponent(hash));
+//     if (details && details.tagName.toLowerCase() === 'details') {
+//       newToggled = details;
+//     }
+//   }
+//   if (newToggled !== toggled) {
+//     toggled = newToggled;
+//     for (var i = 0; i < detailss.length; i++) {
+//       if (toggled !== detailss[i]) detailss[i].open = false;
+//     }
+//     toggled.open = true;
+// //     // console.log(details);
+// //     if (details && details.tagName.toLowerCase() === 'details') details.open = true;
+//   }
+// }
+// // openDetails();
+// window.addEventListener('hashchange', openDetails);
+// // window.addEventListener('DOMContentLoaded', openDetails);
+// })();
+</script>

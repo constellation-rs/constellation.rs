@@ -1,0 +1,76 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://mocatta.net" # the base hostname & protocol for your site, e.g. http://example.com
+
+title: Alec Mocatta
+author: alecmocatta
+email: alec@mocatta.net
+description: >- # this means to ignore newlines until "baseurl:"
+  Alec Mocatta’s Blog. Best viewed in Internet Explorer 5.5 and below.
+twitter_username: alecmocatta
+github_username:  alecmocatta
+linkedin_username: alecmocatta
+# rss: rss
+
+# data:
+#   authors:
+#     alecmocatta:
+#       twitter: alecmocatta
+
+show_excerpts: true
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-seo-tag
+
+header_pages:
+  - about.md
+  - categories.html
+
+permalink: /:year/:month/:day/:title
+
+social:
+  links:
+    - https://twitter.com/alecmocatta
+    - https://www.facebook.com/alec2
+    - https://www.linkedin.com/in/alecmocatta
+    # - https://plus.google.com/+BenBalter
+    - https://github.com/alecmocatta
+    - https://keybase.io/mocatta
+
+twitter:
+  username: alecmocatta
+  card: summary
+
+google_analytics: UA-126485616-1
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
