@@ -15,22 +15,22 @@
 # in the templates via {{ site.myvariable }}.
 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://mocatta.net" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://constellation.rs" # the base hostname & protocol for your site, e.g. http://example.com
 
-title: Alec Mocatta
-author: alecmocatta
-email: alec@mocatta.net
+title: The Constellation Project
+author: constellation-rs
+email: core@constellation.rs
 description: >- # this means to ignore newlines until "baseurl:"
-  Alec Mocatta’s Blog. Best viewed in Internet Explorer 5.5 and below.
-twitter_username: alecmocatta
-github_username:  alecmocatta
-linkedin_username: alecmocatta
+  The home of The Constellation Project to make Rust the cutting edge of distributed computing.
+twitter_username: constellation-rs
+github_username:  constellation-rs
+# linkedin_username: constellation-rs
 # rss: rss
 
 # data:
 #   authors:
-#     alecmocatta:
-#       twitter: alecmocatta
+#     constellation-rs:
+#       twitter: constellation-rs
 
 show_excerpts: true
 
@@ -43,34 +43,49 @@ plugins:
   - jekyll-seo-tag
 
 header_pages:
-  - about.md
-  - categories.html
+  - index.md
+  - chat.md
+  - contributing.md
+  - thanks.md
+  - blog.md
+  - constellation.md
+  - constellation_tutorial.md
+  - constellation_help.md
+  - constellation_features.md
+  - https://github.com/constellation-rs/constellation,GitHub,code
+  - https://docs.rs/constellation-rs,Documentation,menu_book
+  - amadeus.md
+  - amadeus_tutorial.md
+  - amadeus_help.md
+  - amadeus_features.md
+  - https://github.com/constellation-rs/amadeus,GitHub,code
+  - https://docs.rs/amadeus,Documentation,menu_book
 
 permalink: /:year/:month/:day/:title
 
 social:
   links:
-    - https://twitter.com/alecmocatta
-    - https://www.facebook.com/alec2
-    - https://www.linkedin.com/in/alecmocatta
+    - https://twitter.com/constellation-rs
+    # - https://www.facebook.com/alec2
+    # - https://www.linkedin.com/in/constellation-rs
     # - https://plus.google.com/+BenBalter
-    - https://github.com/alecmocatta
-    - https://keybase.io/mocatta
+    - https://github.com/constellation-rs
+    # - https://keybase.io/mocatta
 
 twitter:
-  username: alecmocatta
+  username: constellation-rs
   card: summary
 
-google_analytics: UA-126485616-1
+google_analytics: UA-126485616-2
 
-# Exclude from processing.
-# The following items will not be processed, by default. Create a custom list
-# to override the default setting.
-# exclude:
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+exclude:
+  # Default
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  # Custom
+  - README.md

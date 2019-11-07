@@ -1,0 +1,129 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {%- seo -%}
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-pink.min.css">
+  <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+  {%- feed_meta -%}
+  {%- if jekyll.environment == 'production' and site.google_analytics -%}
+    {%- include google-analytics.html -%}
+  {%- endif -%}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  <style>
+#constellation .logo {
+  background-color: #fff;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+  height: 64px;
+  position: relative;
+  padding: 0 10px;
+}
+@media screen and (max-width:1024px) {
+  #constellation .logo {
+    height: 56px;
+  }
+}
+#constellation .helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+#constellation a {
+  font-weight: inherit;
+}
+#constellation table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#constellation .mdl-layout__header {
+  color: #fff;
+}
+#constellation .subheader {
+  color: rgba(0, 0, 0, 0.56);
+  padding-left: 16px;
+  height: 34px;
+  line-height: 42px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  padding-top: 4px;
+  padding-bottom: 2px;
+}
+#constellation nav {
+  line-height: 48px;
+  background-color: #fff;
+}
+#constellation .mdl-navigation__link {
+  display: block;
+  align-items: center;
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: none;
+  line-height: 48px;
+  height: 48px;
+  border-radius: 0;
+  padding: 0 16px;
+  text-align: left;
+  vertical-align: middle;
+  color: #757575;
+  opacity: 1;
+  text-decoration: none;
+}
+#constellation .mdl-navigation__link.selected {
+  color: #4c9dff;
+  background-color: #eee;
+}
+#constellation .mdl-navigation__link i {
+  font-size: 24px;
+  color: #9e9e9e;
+  margin-right: 16px;
+  margin-bottom: 4px;
+}
+#constellation .mdl-navigation__link.selected i {
+  color: #4c9dff;
+}
+#constellation .mdl-navigation__link i.remote-url {
+  float: right;
+  margin-top: 14px;
+  font-size: 20px;
+  margin-right: 2px;
+}
+#constellation main footer {
+  background-color: #fafbfc;
+}
+#constellation .mdl-layout__drawer {
+  border-right: none;
+  background-color: #fff;
+}
+#constellation .mdl-layout__content {
+  display: flex;
+  flex-direction: column;
+}
+#constellation .wrapper {
+  max-width: -webkit-calc(900px - (30px * 2));
+  max-width: calc(900px - (30px * 2));
+}
+#constellation body {
+  font-size: 16px;
+}
+#constellation p, #constellation ul, #constellation ol, #constellation {
+  font-size: initial;
+}
+#constellation .mdl-button {
+  font-family: inherit;
+}
+#constellation table tr:nth-child(2n) {
+  background-color: transparent;
+}
+#constellation table tr:nth-child(2n+1) {
+  background-color: #f7f7f7;
+}
+#constellation blockquote::before, #constellation blockquote::after {
+  content: none
+}
+  </style>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+</head>

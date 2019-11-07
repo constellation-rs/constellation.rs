@@ -1,11 +1,15 @@
 ---
 layout: post
-title:  The culture-biased IQ test of bureaucracy
-date:   2018-09-28 17:44:04 +0100
-categories: [Politics, Law]
-excerpt: The stakes are high. The letter from the UK Home Office states that on any of the next 90 days you will likely be forceably removed from the country. You have a genuine right to residency, but despite doing your level best and diverting as much of your income as you can afford to solicitors, you have failed in evidencing this to your government.
+title:  "Constellation: A project to make Rust the cutting edge of distributed computing"
+date:   2019-11-06 17:44:04 +0100
+categories: [Constellation, Announcement]
+excerpt: Lorem ipsum. The stakes are high. The letter from the UK Home Office states that on any of the next 90 days you will likely be forceably removed from the country. You have a genuine right to residency, but despite doing your level best and diverting as much of your income as you can afford to solicitors, you have failed in evidencing this to your government.
+highlight_url: /blog
 ---
-The stakes are high. The letter[^1] from the UK Home Office states that on any of the next 90 days you will likely be forceably removed from the country. You have a genuine right to residency, but despite doing your level best and diverting as much of your income as you can afford to solicitors, you have failed in evidencing this to your government.
+
+**Draft**
+
+Lorem ipsum. The stakes are high. The letter[^1] from the UK Home Office states that on any of the next 90 days you will likely be forceably removed from the country. You have a genuine right to residency, but despite doing your level best and diverting as much of your income as you can afford to solicitors, you have failed in evidencing this to your government.
 
 You have one week to convince someone at the Home Office to overturn the decision.
 
