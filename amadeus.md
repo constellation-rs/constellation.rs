@@ -17,12 +17,16 @@ subheading: true
 <p align="center">
     <a href="https://crates.io/crates/amadeus"><img src="https://img.shields.io/crates/v/amadeus.svg?maxAge=86400" alt="Crates.io" /></a>
     <a href="LICENSE.txt"><img src="https://img.shields.io/crates/l/amadeus.svg?maxAge=2592000" alt="Apache-2.0 licensed" /></a>
-    <a href="https://dev.azure.com/alecmocatta/amadeus/_build/latest?branchName=master"><img src="https://dev.azure.com/alecmocatta/amadeus/_apis/build/status/tests?branchName=master" alt="Build Status" /></a>
+    <a href="https://dev.azure.com/alecmocatta/amadeus/_build?definitionId=26"><img src="https://dev.azure.com/alecmocatta/amadeus/_apis/build/status/tests?branchName=master" alt="Build Status" /></a>
+</p>
+
+<p align="center">
+    <a href="https://docs.rs/amadeus/0.2.4/amadeus/">📖 Docs</a> | <a href="https://constellation.rs/amadeus">🌐 Home</a> | <a href="https://constellation.zulipchat.com/#narrow/stream/213231-amadeus">💬 Chat</a>
 </p>
 
 ## Amadeus provides:
 
-- **Distributed iterators:** like [Rayon](https://github.com/rayon-rs/rayon)'s parallel iterators, but distributed across a cluster.
+- **Distributed streams:** like [Rayon](https://github.com/rayon-rs/rayon)'s parallel iterators, but distributed across a cluster.
 - **Data connectors:** to work with CSV, JSON, Parquet, Postgres, S3 and more.
 - **ETL and Data Science tooling:** focused on streaming processing & analysis.
 
@@ -54,7 +58,7 @@ We aim to create a community that is welcoming and helpful to anyone that is int
 
 Amadeus has deep, pluggable, integration with various file formats, databases and interfaces:
 
-| Data format | [`Source`](https://docs.rs/amadeus/0.1.4/amadeus/trait.Source.html) | [`Sink`](https://docs.rs/amadeus/0.1.4/amadeus/trait.Sink.html) |
+| Data format | [`Source`](https://docs.rs/amadeus/0.2.4/amadeus/trait.Source.html) | [`Destination`](https://docs.rs/amadeus/0.2.4/amadeus/trait.Destination.html) |
 |---|---|---|
 | CSV | ✔ | ✔ |
 | JSON | ✔ | ✔ |
@@ -91,30 +95,38 @@ This will read the Parquet partitions from the S3 bucket, and print the 100 most
 
 ```rust
 use amadeus::prelude::*;
+use amadeus::data::{IpAddr, Url};
+use std::error::Error;
 
-#[derive(Data)]
+#[derive(Data, Clone, PartialEq, Debug)]
 struct LogLine {
-    url: Url,
-    ip: IpAddr
+    uri: Option<String>,
+    requestip: Option<IpAddr>,
 }
 
-fn main() {
-    let pool = ThreadPool::new()?;
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let pool = ThreadPool::new(None)?;
 
-    let rows = Parquet::new(ParquetDirectory::new(S3Directory::new(
+    let rows = Parquet::new(ParquetDirectory::new(S3Directory::new_with(
         AwsRegion::UsEast1,
         "us-east-1.data-analytics",
         "cflogworkshop/optimized/cf-accesslogs/",
-    )))?;
+        AwsCredentials::Anonymous,
+    )))
+    .await?;
 
     let top_pages = rows
-        .dist_iter()
-        .map(FnMut!(|row: Result<LogLine, _>| {
-            (row.url, row.ip)
-        }))
-        .most_distinct(&pool, 100, 0.99, 0.002);
+        .par_stream()
+        .map(|row: Result<LogLine, _>| {
+            let row = row.unwrap();
+            (row.uri, row.requestip)
+        })
+        .most_distinct(&pool, 100, 0.99, 0.002, 0.0808)
+        .await;
 
     println!("{:#?}", top_pages);
+    Ok(())
 }
 ```
 
@@ -125,25 +137,33 @@ This is typed, so faster, and it goes an analytics step further also, prints top
 
 ```rust
 use amadeus::prelude::*;
+use std::error::Error;
 
-fn main() {
-    let pool = ThreadPool::new()?;
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let pool = ThreadPool::new(None)?;
 
-    let rows = Parquet::new(ParquetDirectory::new(S3Directory::new(
+    let rows = Parquet::new(ParquetDirectory::new(S3Directory::new_with(
         AwsRegion::UsEast1,
         "us-east-1.data-analytics",
         "cflogworkshop/optimized/cf-accesslogs/",
-    )))?;
+        AwsCredentials::Anonymous,
+    )))
+    .await?;
 
     let top_pages = rows
-        .dist_iter()
-        .filter_map(FnMut!(|row: Result<Value, _>| {
+        .par_stream()
+        .map(|row: Result<Value, _>| {
             let row = row.ok()?.into_group().ok()?;
-            row.get("url")?.into_url().ok()
-        }))
-        .most_frequent(&pool, 100, 0.99, 0.002);
+            row.get("uri")?.clone().into_url().ok()
+        })
+        .filter(|row| futures::future::ready(row.is_some()))
+        .map(Option::unwrap)
+        .most_frequent(&pool, 100, 0.99, 0.002)
+        .await;
 
     println!("{:#?}", top_pages);
+    Ok(())
 }
 ```
 
@@ -151,23 +171,27 @@ fn main() {
 
 What about loading this data into Postgres? This will create and populate a table called "accesslogs".
 
-```rust
+```rust,ignore
 use amadeus::prelude::*;
+use std::error::Error;
 
-fn main() {
-    let pool = ThreadPool::new()?;
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let pool = ThreadPool::new(None)?;
 
-    let rows = Parquet::new(ParquetDirectory::new(S3Directory::new(
+    let rows = Parquet::new(ParquetDirectory::new(S3Directory::new_with(
         AwsRegion::UsEast1,
         "us-east-1.data-analytics",
         "cflogworkshop/optimized/cf-accesslogs/",
-    )))?;
+        AwsCredentials::Anonymous,
+    )))
+    .await?;
 
-    rows
-        .dist_iter()
+    // Note: this isn't yet implemented!
+    rows.par_stream()
         .pipe(Postgres::new("127.0.0.1", PostgresTable::new("accesslogs")));
 
-    println!("{:#?}", top_pages);
+    Ok(())
 }
 ```
 
@@ -178,9 +202,49 @@ Operations can run on a parallel threadpool or on a distributed process pool.
 Amadeus uses the [**Constellation**](https://github.com/constellation-rs/constellation) framework for process distribution and communication. Constellation has backends for a bare cluster (Linux or macOS), and a managed Kubernetes cluster.
 
 ```rust
-fn main() {
-    contellation::init(Resources::default());
-    let process_pool = ProcessPool::new(processes, 1, Resources::default()).unwrap();
+use amadeus::dist::prelude::*;
+use amadeus::data::{IpAddr, Url};
+use constellation::*;
+use std::error::Error;
+
+#[derive(Data, Clone, PartialEq, Debug)]
+struct LogLine {
+    uri: Option<String>,
+    requestip: Option<IpAddr>,
+}
+
+fn main() -> Result<(), Box<dyn Error>> {
+    init(Resources::default());
+
+    // #[tokio::main] isn't supported yet so unfortunately setting up the Runtime must be done explicitly
+    tokio::runtime::Builder::new()
+        .threaded_scheduler()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(async {
+            let pool = ProcessPool::new(None, None, Resources::default())?;
+
+            let rows = Parquet::new(ParquetDirectory::new(S3Directory::new_with(
+                AwsRegion::UsEast1,
+                "us-east-1.data-analytics",
+                "cflogworkshop/optimized/cf-accesslogs/",
+                AwsCredentials::Anonymous,
+            )))
+            .await?;
+
+            let top_pages = rows
+                .dist_stream()
+                .map(FnMut!(|row: Result<LogLine, _>| {
+                    let row = row.unwrap();
+                    (row.uri, row.requestip)
+                }))
+                .most_distinct(&pool, 100, 0.99, 0.002, 0.0808)
+                .await;
+
+            println!("{:#?}", top_pages);
+            Ok(())
+        })
 }
 ```
 
@@ -195,3 +259,11 @@ Take a look at the various [examples](examples).
 ## Contribution
 
 Amadeus is an open source project! If you'd like to contribute, check out the list of [“good first issues”](https://github.com/constellation-rs/amadeus/contribute). These are all (or should be) issues that are suitable for getting started, and they generally include a detailed set of instructions for what to do. Please ask questions and ping us on [our Zulip chat](https://constellation.zulipchat.com/#narrow/stream/213231-amadeus) if anything is unclear!
+
+## License
+Licensed under Apache License, Version 2.0, ([LICENSE.txt](LICENSE.txt) or
+http://www.apache.org/licenses/LICENSE-2.0).
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
+licensed as above, without any additional terms or conditions.
