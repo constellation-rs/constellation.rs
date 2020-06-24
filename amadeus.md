@@ -132,8 +132,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
 This is typed, so faster, and it goes an analytics step further also, prints top 100 URLs by distinct IPs logged.
 
-<details>
-<summary>See the same example but with data dynamically typed.</summary>
+The same example but with data dynamically typed:
 
 ```rust
 use amadeus::prelude::*;
@@ -166,8 +165,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 ```
-
-</details>
 
 What about loading this data into Postgres? This will create and populate a table called "accesslogs".
 
