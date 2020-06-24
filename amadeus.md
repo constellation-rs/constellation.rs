@@ -258,7 +258,7 @@ Take a look at the various [examples](examples).
 Amadeus is an open source project! If you'd like to contribute, check out the list of [“good first issues”](https://github.com/constellation-rs/amadeus/contribute). These are all (or should be) issues that are suitable for getting started, and they generally include a detailed set of instructions for what to do. Please ask questions and ping us on [our Zulip chat](https://constellation.zulipchat.com/#narrow/stream/213231-amadeus) if anything is unclear!
 
 ## License
-Licensed under Apache License, Version 2.0, ([LICENSE.txt](LICENSE.txt) or
+Licensed under Apache License, Version 2.0, ([LICENSE.txt](https://github.com/constellation-rs/amadeus/blob/master/LICENSE.txt) or
 http://www.apache.org/licenses/LICENSE-2.0).
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
